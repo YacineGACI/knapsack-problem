@@ -1,0 +1,54 @@
+body{
+    background-color: #20EEA9 ;
+    color: white ;
+}
+
+h1{
+    text-align: center ;
+    font-size: 5em ;
+    padding-top: 2% ;
+}
+
+h2, h4{
+    text-align: center ;
+}
+
+#circular img{
+    margin auto ;
+    border-radius: 50% ;
+    width: 30%;
+    height: 30%;
+    background: aqua;
+    border: 30px solid blue;
+}
+
+.BackColor{
+    background-color: #18AD7C ;
+}
+
+.entry{
+    font-weight: bold ;
+    font-size: 1.5em ;
+}
+
+th{
+    font-size : 2em ;
+}
+
+/* .retourner{
+    background-color : white ;
+    color : #20EEA9 ;
+    border-color: white ;
+    font-family: sans-serif ;
+    padding: 20px ;
+    font-weight: bold ;
+    font-size: 2em ;
+    font-style: none ;
+    border : 3px white solid ;
+}
+
+.retourner:hover{
+    color : white ;
+    background-color : #18B782 ;
+    border-color: white ;
+} */

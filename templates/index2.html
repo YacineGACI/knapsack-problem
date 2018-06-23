@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Problème du Sac à dos</title>
+        <meta charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+        <script src="{{ url_for('static', filename='jquery-3.2.1.min.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='bootstrap.min.js')}}"></script>
+    </head>
+    <body>
+        <h1>Problème du Sac à dos</h1>
+        <!--<div id="circular"><img class="img-responsive" src="{{url_for('static', filename='image.png')}}" /></div>-->
+        <div class="container">
+            <label for="total">Total Width: </label>
+            <input type="text" name="total" id="total" />
+        <div id="table" class="table-editable">
+                <span class="table-add glyphicon glyphicon-plus">Add</span>
+                <table class="table">
+                  <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Stir Fry</td>
+                    <td contenteditable="true">stir-fry</td>
+                    <td>
+                      <span class="table-remove glyphicon glyphicon-remove">Remove</span>
+                    </td>
+                    <td>
+                      <span class="table-up glyphicon glyphicon-arrow-up">Up</span>
+                      <span class="table-down glyphicon glyphicon-arrow-down">Down</span>
+                    </td>
+                  </tr>
+                  <!-- This is our clonable table line -->
+                  <tr class="hide">
+                    <td contenteditable="true">Untitled</td>
+                    <td contenteditable="true">undefined</td>
+                    <td>
+                      <span class="table-remove glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td>
+                      <span class="table-up glyphicon glyphicon-arrow-up"></span>
+                      <span class="table-down glyphicon glyphicon-arrow-down"></span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <button id="SendData" type="btn btn-default">Confirm</button>
+
+        <div id="result">
+        </div>
+
+        </div>
+
+        <script>
+            $(document).ready(function(){
+                var appendTime = 0 ;
+
+                function appendResult(result){
+                    if(appendTime == 0){
+                        $("#result").append("<h2>The optimized maximum value is</h2>")
+                        $("#result").append("<h1>" + result.res + "</h1>")
+                        $("#result").append("<h4>Time taken " + result.time + " seconds</h4>")
+                        $("#result").append("<a href='/'>Return to Home page</a>")
+                        appendTime = 1 ;
+                    }
+                    
+                }
+
+                $("#SendData").click(function(){
+
+                    var totalWeight = 7;
+                    var weights = [1,6,3] ;
+                    var values = [3,8,2] ;
+                    var data = {
+                        totalWeight: totalWeight,
+                        weights: weights,
+                        values:values
+                    }
+
+                    $.ajax({
+                        type:"POST",
+                        contentType: "application/json",
+                        url:"/result",
+                        dataType:"json",
+                        data: JSON.stringify(data),
+                        success: function(result){
+                            appendResult(result)
+                            console.log(result)
+                        }
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>

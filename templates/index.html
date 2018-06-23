@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Problème du Sac à dos</title>
+    <meta charset="utf-8" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+    <script src="{{ url_for('static', filename='jquery-3.2.1.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js')}}"></script>
+</head>
+
+<body>
+    <h1>Problème du Sac à dos</h1>
+    <div class="row">
+        <div class="col-md-4"><img id="backpack" class="img-responsive" src="{{url_for('static', filename='backpack.png')}}" /></div>
+        <div class=" col-md-7">
+            <label for="total">Poids total: </label>
+            <input type="text" name="total" id="total" />
+            <div id="table" class="table-editable">
+                <button class="table-add glyphicon glyphicon-plus btn btn-default" id="addRow">Ajouter</button>
+                <table class="table">
+                    <tr>
+                        <th>Poids</th>
+                        <th>Valeur</th>
+                    </tr>
+                </table>
+            </div>
+
+            <button id="SendData" class="btn btn-info">Confirmer</button>
+
+            <div id="result">
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var appendTime = 0;
+
+            function appendResult(result) {
+                if (appendTime == 0) {
+                    $("#result").append("<h2>La valeur maximale est:</h2>")
+                    $("#result").append("<h1>" + result.res + "</h1>")
+                    $("#result").append("<h4>Temps de calcul pris: " + result.time + " secondes</h4>")
+                    $("#result").append("<a href='/' type='button' class='btn btn-default'>Retourner</a>")
+                    appendTime = 1;
+                }
+                // How to get the objects
+                $(result.items).addClass("BackColor") ;
+            }
+            
+
+            $("#SendData").click(function() {
+
+                var weights = [] ;
+                var values = [] ;
+                var indexes = [] ;
+                var cpt = 0 ;
+                var totalWeight = parseInt($("#total").val()) ;
+
+                $("tr:not(removed) .weight").each(function(){
+                    weights.push(parseInt($(this).text())) ;
+                    indexes.push(cpt) ;
+                    cpt++ ;
+                }) ;
+
+                $("tr:not(removed) .value").each(function(){
+                    values.push(parseInt($(this).text())) ;
+                }) ;
+
+
+                var data = {
+                    totalWeight: totalWeight,
+                    weights: weights,
+                    values: values,
+                    indexes: indexes
+                }
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/result",
+                    dataType: "json",
+                    data: JSON.stringify(data),
+                    success: function(result) {
+                        appendResult(result)
+                    }
+                })
+            })
+        })
+    </script>
+    <script src="{{ url_for('static', filename='myTable.js')}}"></script>
+</body>
+
+</html>
